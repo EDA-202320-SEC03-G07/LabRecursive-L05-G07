@@ -27,7 +27,7 @@ import config as cf
 import sys
 # import resource
 import gc
-# TODO importar la libreria threading (parte 2)
+import threading
 import controller
 from DISClib.ADT import list as lt
 assert cf
@@ -56,7 +56,6 @@ def printMenu():
     print("4- Libros por género")
     print("5- Ordenar los libros por ISBN")
     print("6- Desordenar los libros por ISBN")
-    # TODO agregar opciones al menu (parte 2)
     print("7- Buscar un libro por ISBN")
     print("8- Calcular el rating promedio de libros")
     print("9- Filtrar el catálogo de libros por un rango de califaciones")
@@ -265,5 +264,5 @@ def menu_cycle():
 
 # main del ejercicio
 if __name__ == "__main__":
-    # TODO modificar main para reserar memoria (parte 2)
+    sys.setrecursionlimit(default_limit*1000000)
     menu_cycle()

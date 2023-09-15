@@ -232,7 +232,7 @@ def compareISBN(book1, book2):
     """
     compara dos libros por su ISBN
     """
-    # TODO examinar el criterio de ordenamiento (parte 1)
+
     return (str(book1["isbn13"]) > str(book2["isbn13"]))
 
 
@@ -242,7 +242,7 @@ def sortBooks(catalog):
     """
     Ordena los libros por ISBN
     """
-    # TODO examinar el ordenamiento (parte 1)
+
     # toma la lista de libros del catalogo
     books = catalog["books"]
     # ordena la lista de libros
@@ -256,7 +256,7 @@ def shuffleBooks(catalog):
     """
     Desordena los libros dentro del catalogo
     """
-    # TODO examinar la funcion para desordenar (parte 1)
+
     books = catalog["books"]
     element_num = lt.size(books)
     # creo la nueva lista desordenada vacia
