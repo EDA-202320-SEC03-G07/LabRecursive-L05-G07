@@ -314,8 +314,69 @@ def averageBookRatings(catalog, recursive=True):
         hay libros en el catalogo
     """
     # TODO implementar la funcion para calcular el promedio (parte 2)
-    pass
+    if recursive:
+        return recursiveAvgBooksRating(catalog)
+    else:
+        return iterativeAvgBooksRating(catalog)
 
+def AvgBooksRatings(books, idx, n):
+    """AvgBooksRatings ejecuta recursivamente el promedio de ratings teniendo
+    en cuenta el indice de inicio y el total de libros a procesar por la llave
+    "average_rating"
+
+    Args:
+        books (ADT List): lista de libros en el catalogo
+        idx (int): indice de inicio de la lista
+        n (int): total de libros a procesar
+
+    Returns:
+        float: promedio de ratings de los libros en la lista
+    """
+    # TODO implementar recursivamente el calculo del promedio para el lab 5
+    if idx > n:
+        return 0
+    book = lt.getElement(books, idx)
+    rating = float(book["average_rating"])
+    return rating + AvgBooksRatings(books, idx + 1, n)
+
+def recursiveAvgBooksRating(catalog):
+    """recursiveAvgBooksRating es la mascara para el calculo recursivo del
+    promedio de ratings de los libros en el catalogo, utiliza la llave
+    "average_rating" y prepara las condiciones para la recursion
+
+    Args:
+        catalog (dict): el catalogo de libros
+
+    Returns:
+        float: promedio de ratings de los libros en el catalogo
+    """
+    # TODO implementar la mascara recursiva del calculo del promedio (parte 2)
+    total_books = lt.size(catalog['books'])
+    if total_books == 0:
+        return 0
+    return AvgBooksRatings(catalog['books'], 1, total_books) / total_books
+
+
+def iterativeAvgBooksRating(catalog):
+    """iterativeAvgBooksRating calcula iterativamente el promedio de ratings de
+    los libros en el catalogo, utiliza la llave "average_rating" y devuelve el
+    promedio de todos los libros
+
+    Args:
+        catalog (dict): el catalogo de libros
+
+    Returns:
+        float: promedio de ratings de los libros en la lista
+    """
+    # TODO implementar iterativamente el calculo del promedio (parte 2)
+    total_books = lt.size(catalog['books'])
+    if total_books == 0:
+        return 0
+    total_rating = 0
+    for idx in range(1, total_books + 1):
+        book = lt.getElement(catalog['books'], idx)
+        total_rating += float(book["average_rating"])
+    return total_rating / total_books
 
 def filterBooksByRating(catalog, low, high, recursive=True):
     """filterBooksByRating es la funcion principal para filtrar los libros
@@ -331,7 +392,10 @@ def filterBooksByRating(catalog, low, high, recursive=True):
         ADT list: listado de libros que cumplen con el rango de rating
     """
     # TODO implementar la funcion principal para filtrar libros (parte 2)
-    pass
+    if recursive:
+        return recursiveFilterBooksByRating(catalog, low, high)
+    else:
+        return iterativeFilterBooksByRating(catalog, low, high)
 
 
 # Funciones de busqueda y filtros
@@ -422,51 +486,6 @@ def iterativeSearchBookByISBN(catalog, bookid):
 
 # funciones para calcular estadisticas
 
-def recursiveAvgBooksRating(catalog):
-    """recursiveAvgBooksRating es la mascara para el calculo recursivo del
-    promedio de ratings de los libros en el catalogo, utiliza la llave
-    "average_rating" y prepara las condiciones para la recursion
-
-    Args:
-        catalog (dict): el catalogo de libros
-
-    Returns:
-        float: promedio de ratings de los libros en el catalogo
-    """
-    # TODO implementar la mascara recursiva del calculo del promedio (parte 2)
-    pass
-
-
-def AvgBooksRatings(books, idx, n):
-    """AvgBooksRatings ejecuta recursivamente el promedio de ratings teniendo
-    en cuenta el indice de inicio y el total de libros a procesar por la llave
-    "average_rating"
-
-    Args:
-        books (ADT List): lista de libros en el catalogo
-        idx (int): indice de inicio de la lista
-        n (int): total de libros a procesar
-
-    Returns:
-        float: promedio de ratings de los libros en la lista
-    """
-    # TODO implementar recursivamente el calculo del promedio para el lab 5
-    pass
-
-
-def iterativeAvgBooksRating(catalog):
-    """iterativeAvgBooksRating calcula iterativamente el promedio de ratings de
-    los libros en el catalogo, utiliza la llave "average_rating" y devuelve el
-    promedio de todos los libros
-
-    Args:
-        catalog (dict): el catalogo de libros
-
-    Returns:
-        float: promedio de ratings de los libros en la lista
-    """
-    # TODO implementar iterativamente el calculo del promedio (parte 2)
-    pass
 
 
 def recursiveFilterBooksByRating(catalog, low, high):
@@ -483,7 +502,8 @@ def recursiveFilterBooksByRating(catalog, low, high):
         ADT List: listado de libros que cumplen con el rango de rating
     """
     # TODO implementar la mascara recursiva para filtrar libros (parte 2)
-    pass
+    result = lt.newList('SINGLE_LINKED')
+    return filteringBooksByRating(catalog["books"], result, low, high)
 
 
 def filteringBooksByRating(books, answer, low, high, idx=1):
@@ -502,7 +522,13 @@ def filteringBooksByRating(books, answer, low, high, idx=1):
         ADT List: lista de libros filtrados
     """
     # TODO implementar recursivamente el filtrado de libros (parte 2)
-    pass
+    if idx <= lt.size(books):
+        book = lt.getElement(books, idx)
+        rating = float(book["average_rating"])
+        if low <= rating <= high:
+            lt.addLast(answer, book)
+        return filteringBooksByRating(books, answer, low, high, idx+1)
+    return answer
 
 
 def iterativeFilterBooksByRating(catalog, low, high):
@@ -520,4 +546,10 @@ def iterativeFilterBooksByRating(catalog, low, high):
         defecto SINGLE_LINKED
     """
     # TODO implementar iterativamente el filtrado de libros (parte 2)
-    pass
+    result = lt.newList('SINGLE_LINKED')
+    for idx in range(1, lt.size(catalog["books"]) + 1):
+        book = lt.getElement(catalog["books"], idx)
+        rating = float(book["average_rating"])
+        if low <= rating <= high:
+            lt.addLast(result, book)
+    return result

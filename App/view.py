@@ -264,5 +264,7 @@ def menu_cycle():
 
 # main del ejercicio
 if __name__ == "__main__":
+    threading.stack_size(67108864*2)
     sys.setrecursionlimit(default_limit*1000000)
-    menu_cycle()
+    thread = threading.Thread(target=menu_cycle)
+    thread.start()
