@@ -292,9 +292,12 @@ def findBookbyISBN(catalog, bookisbn, recursive=True):
         dict: el resultado de la busqueda, None si no se encuentra
         el libro
     """
+    books=catalog['books']
     # TODO implementar la funcion para la busqueda binaria (parte 2)
+    if not recursive:
+       return iterativeSearchBookByISBN(books,bookisbn)
     if recursive:
-        return recursiveSearchBookByISBN(catalog, bookisbn)
+        return recursiveSearchBookByISBN(books,bookisbn)
     pass
 
 
@@ -346,8 +349,16 @@ def recursiveSearchBookByISBN(catalog, bookisbn):
         book: el diccionario que cumple con el ISBN dentro de la
         lista de libros
     """
+    i=0
+    f= len(catalog)-1
+    pos=searchBookByISBN(catalog,bookisbn,i,f)
+    if pos ==-1:
+        return None
+    else:
+        return lt.getElement(catalog,pos)
+    
     # TODO implementar la mascara de la busqueda recursiva (parte 2)
-    pass
+    
 
 
 def searchBookByISBN(books, bookisbn, low, high):
@@ -364,8 +375,18 @@ def searchBookByISBN(books, bookisbn, low, high):
     Returns:
         int: indice del libro en la lista, -1 si no lo encuentra
     """
+    
     # TODO implementar recursivamente binary search (parte 2)
-    pass
+    if low<=high:
+        m=(low+high)//2
+        if int(lt.getElement(books,m)["isbn13"])==bookisbn:
+            return m
+        elif int(lt.getElement(books,m)["isbn13"])<bookisbn:
+            return searchBookByISBN(books,bookisbn,low,m-1)
+        else:
+            return searchBookByISBN(books,bookisbn,m+1,high)
+    else:
+        return -1        
 
 
 def iterativeSearchBookByISBN(catalog, bookid):
@@ -381,8 +402,22 @@ def iterativeSearchBookByISBN(catalog, bookid):
         book: el diccionario que cumple con el ISBN dentro de la
         lista de libros
     """
-    # TODO implementar iterativamente del binary search (parte 2)
-    pass
+        # TODO implementar iterativamente del binary search (parte 2)
+    i=0
+    f=len(catalog)-1
+    libro=None
+    encontrado=False
+    while i<=f and not encontrado:
+        m=(i+f)//2
+        if int(lt.getElement(catalog,m)['isbn13'])==bookid:
+            libro=lt.getElement(catalog,m)
+        elif int(lt.getElement(catalog,m)['isbn13'])>bookid:
+            i=m+1
+        else:
+            f=m-1
+    return libro
+
+
 
 
 # funciones para calcular estadisticas
