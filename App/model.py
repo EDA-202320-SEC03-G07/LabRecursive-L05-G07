@@ -292,13 +292,12 @@ def findBookbyISBN(catalog, bookisbn, recursive=True):
         dict: el resultado de la busqueda, None si no se encuentra
         el libro
     """
-    books=catalog['books']
+    
     # TODO implementar la funcion para la busqueda binaria (parte 2)
     if not recursive:
-       return iterativeSearchBookByISBN(books,bookisbn)
-    if recursive:
-        return recursiveSearchBookByISBN(books,bookisbn)
-    pass
+       return iterativeSearchBookByISBN(catalog,bookisbn)
+    else:
+        return recursiveSearchBookByISBN(catalog,bookisbn)
 
 
 def averageBookRatings(catalog, recursive=True):
@@ -413,13 +412,11 @@ def recursiveSearchBookByISBN(catalog, bookisbn):
         book: el diccionario que cumple con el ISBN dentro de la
         lista de libros
     """
-    i=0
-    f= len(catalog)-1
-    pos=searchBookByISBN(catalog,bookisbn,i,f)
-    if pos ==-1:
-        return None
-    else:
-        return lt.getElement(catalog,pos)
+    books = catalog["books"]
+    l = 0
+    h = lt.size(books)
+    index = searchBookByISBN(books,bookisbn,l,h)
+    return lt.getElement(books,index)
     
     # TODO implementar la mascara de la busqueda recursiva (parte 2)
     
@@ -441,16 +438,17 @@ def searchBookByISBN(books, bookisbn, low, high):
     """
     
     # TODO implementar recursivamente binary search (parte 2)
-    if low<=high:
-        m=(low+high)//2
-        if int(lt.getElement(books,m)["isbn13"])==bookisbn:
+    if low <= high:
+        m = (low + high) // 2
+        v = (lt.getElement(books, m))
+        if (v["isbn13"]) == bookisbn:
             return m
-        elif int(lt.getElement(books,m)["isbn13"])<bookisbn:
-            return searchBookByISBN(books,bookisbn,low,m-1)
+        elif (v["isbn13"]) > bookisbn:
+            return searchBookByISBN(books, bookisbn, m+1, high)
         else:
-            return searchBookByISBN(books,bookisbn,m+1,high)
+            return searchBookByISBN(books, bookisbn, low, m-1)
     else:
-        return -1        
+        return -1 
 
 
 def iterativeSearchBookByISBN(catalog, bookid):
@@ -467,19 +465,18 @@ def iterativeSearchBookByISBN(catalog, bookid):
         lista de libros
     """
         # TODO implementar iterativamente del binary search (parte 2)
-    i=0
-    f=len(catalog)-1
-    libro=None
-    encontrado=False
-    while i<=f and not encontrado:
+    i=1
+    f=lt.size(catalog["books"])
+    books = catalog["books"]
+    while i<=f :
         m=(i+f)//2
-        if int(lt.getElement(catalog,m)['isbn13'])==bookid:
-            libro=lt.getElement(catalog,m)
-        elif int(lt.getElement(catalog,m)['isbn13'])>bookid:
+        if int(lt.getElement(books,m)['isbn13'])==bookid:
+            return lt.getElement(books,m)
+        elif int(lt.getElement(books,m)['isbn13'])>bookid:
             i=m+1
         else:
             f=m-1
-    return libro
+    return None
 
 
 
