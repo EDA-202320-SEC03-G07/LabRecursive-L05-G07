@@ -350,10 +350,10 @@ def recursiveAvgBooksRating(catalog):
         float: promedio de ratings de los libros en el catalogo
     """
     # TODO implementar la mascara recursiva del calculo del promedio (parte 2)
-    total_books = lt.size(catalog['books'])
+    total_books = lt.size(catalog["books"])
     if total_books == 0:
         return 0
-    return AvgBooksRatings(catalog['books'], 1, total_books) / total_books
+    return AvgBooksRatings(catalog["books"], 1, total_books) / total_books
 
 
 def iterativeAvgBooksRating(catalog):
@@ -368,12 +368,12 @@ def iterativeAvgBooksRating(catalog):
         float: promedio de ratings de los libros en la lista
     """
     # TODO implementar iterativamente el calculo del promedio (parte 2)
-    total_books = lt.size(catalog['books'])
+    total_books = lt.size(catalog["books"])
     if total_books == 0:
         return 0
     total_rating = 0
     for idx in range(1, total_books + 1):
-        book = lt.getElement(catalog['books'], idx)
+        book = lt.getElement(catalog["books"], idx)
         total_rating += float(book["average_rating"])
     return total_rating / total_books
 
@@ -412,11 +412,11 @@ def recursiveSearchBookByISBN(catalog, bookisbn):
         book: el diccionario que cumple con el ISBN dentro de la
         lista de libros
     """
-    books = catalog["books"]
-    l = 0
-    h = lt.size(books)
-    index = searchBookByISBN(books,bookisbn,l,h)
-    return lt.getElement(books,index)
+    book_list = catalog["books"]
+    low = 0
+    high = lt.size(book_list)
+    book_index = searchBookByISBN(book_list, bookisbn, low, high)
+    return lt.getElement(book_list, book_index)
     
     # TODO implementar la mascara de la busqueda recursiva (parte 2)
     
@@ -543,7 +543,7 @@ def iterativeFilterBooksByRating(catalog, low, high):
         defecto SINGLE_LINKED
     """
     # TODO implementar iterativamente el filtrado de libros (parte 2)
-    result = lt.newList('SINGLE_LINKED')
+    result = lt.newList("SINGLE_LINKED")
     for idx in range(1, lt.size(catalog["books"]) + 1):
         book = lt.getElement(catalog["books"], idx)
         rating = float(book["average_rating"])
